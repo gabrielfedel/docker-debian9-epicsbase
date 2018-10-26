@@ -1,11 +1,18 @@
-FROM debian:stretch
-# Install Epics
-RUN apt-get update && apt-get install git libreadline7 libreadline-dev libtinfo-dev readline-common -y
-RUN git clone https://github.com/lnls-sol/epics-base_debs
-# ignore epics-perl (this package have some problems)
-RUN rm epics-base_debs/debs/epics-perl_3.15.3-13_amd64.deb
-RUN dpkg -i epics-base_debs/debs/*.deb
-RUN rm -rf epics-base_debs
-RUN mkdir /usr/local/epics
-RUN ln -s /usr/lib/epics /usr/local/epics/base
-CMD bash
+FROM debian
+
+RUN apt-get update
+RUN apt-get install wget make gcc g++ perl-modules-5.24 libreadline-dev -y
+
+WORKDIR /tmp
+COPY install.sh ./
+RUN chmod +x install.sh
+RUN ./install.sh
+
+COPY epics.sh /etc/profile.d/
+RUN chmod +x /etc/profile.d/epics.sh
+RUN echo ". /etc/profile.d/epics.sh" >> /etc/bash.bashrc
+
+#RUN rm epics.sh
+RUN rm install.sh
+
+CMD BASH
