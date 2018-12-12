@@ -11,6 +11,7 @@ RUN ./install.sh
 COPY epics.sh /etc/profile.d/
 RUN chmod +x /etc/profile.d/epics.sh
 RUN echo ". /etc/profile.d/epics.sh" >> /etc/bash.bashrc
+RUN arch | xargs -i@ echo "/usr/local/epics/base/lib/linux-@" > /etc/ld.so.conf.d/epics.conf
 
 #RUN rm epics.sh
 RUN rm install.sh
