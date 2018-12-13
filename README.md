@@ -1,4 +1,4 @@
-# debian8-epicsbase
+# debian9-epicsbase
 
 Create a Debian 9 machine with epics(3.15.X).
 
